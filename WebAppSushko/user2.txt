@@ -1,0 +1,24 @@
+Договор №3 на предоставление услуг
+Пользователю Ivanov Ivan Ivanovich
+Логин - user2
+Текущий статус - UNBLOCKED
+Балланс = 330
+Телефон пользователя: +380957654321
+Адресс пользователя - Lviv Miry str. 12
+
+
+
+Подключенные услуги:
+	1. Satellite TV
+	Стоимость:100
+	Описание Great variety of channels on your TV
+
+	2. Full HD
+	Стоимость:50
+	Описание super high quality video
+
+	3. Standart Radio station
+	Стоимость:20
+	Описание 20 radio stations
+
+	
