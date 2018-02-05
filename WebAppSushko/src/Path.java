@@ -20,6 +20,6 @@ public final class Path {
     public static final String PAGE_CHANGE_TARIFF_PAGE = "//WEB-INF/jsp_page/editTariff.jsp";
     public static final String PAGE_CHANGE_SERVICE_PAGE = "//WEB-INF/jsp_page/editService.jsp";
     public static final String PAGE_NO_ENTER_PAGE = "//noEnter.html";
-    public static final String PAGE_START_PAGE = "startform.html";
+    public static final String PAGE_START_PAGE = "startform.jsp";
 }
 

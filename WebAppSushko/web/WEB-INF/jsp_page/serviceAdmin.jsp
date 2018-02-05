@@ -1,11 +1,4 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: Olga
-  Date: 17.01.2018
-  Time: 14:32
-  To change this template use File | Settings | File Templates.
---%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@page pageEncoding="UTF-8" contentType="text/html; charset=UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
@@ -13,14 +6,14 @@
 </head>
 <body>
 
-<h1>Tariff</h1>
+<h1>${tariff}</h1>
 <br>
 <TABLE BORDER>
     <TR>
-        <TD>ID</TD>
-        <TD>Name</TD>
-        <TD>Price</TD>
-        <TD>Description</TD>
+        <TD>${id}</TD>
+        <TD>${name}</TD>
+        <TD>${price}</TD>
+        <TD>${descript}</TD>
     </TR>
     <c:forEach var="p" items="${allServiceForTariff}">
         <TR>
@@ -32,7 +25,7 @@
     </c:forEach>
 </TABLE>
 <br>
-<input align="center" type="button" name="cancel" value="Back" onclick="history.back();">
+<input align="center" type="button" name="cancel" value="${back}" onclick="history.back();">
 
 </body>
 </html>

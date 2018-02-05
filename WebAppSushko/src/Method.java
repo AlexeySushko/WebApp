@@ -10,10 +10,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import java.io.UnsupportedEncodingException;
+import java.util.*;
 
 public class Method {
 
@@ -221,12 +219,14 @@ public class Method {
         ArrayList<Tariff> tariffs = db.findAlltariff();//получим все тарифы
         ArrayList<Service> allService = db.findAllService();//получим все сервисы
 
+
         List<User> users = db.findAllUsers();//получим всех пользователей
         req.setAttribute("arrUser", users);
         req.setAttribute("arrTariff", tariffs);
         req.setAttribute("allService", allService);
         User user = (User) s.getAttribute("currentUser");
         req.setAttribute("nameAdmin", user.getFio());
+        Method.setAttributeAdminPage(req);
         RequestDispatcher rd = req.getRequestDispatcher(Path.PAGE_ADMIN_PAGE);
         rd.forward(req, resp);
     }
@@ -338,4 +338,326 @@ public class Method {
 
         return "";
     }
+
+    public static void setLanguage(HttpServletRequest req, HttpServletResponse resp) {
+
+        HttpSession s = req.getSession();
+        Locale locale;
+        System.out.println("ЯЗЫК >>> "+req.getParameter("changeLanguage"));
+
+        if(req.getParameter("changeLanguage").equals("Русский")){
+            locale  = new Locale(Constant.LANGUAGE_RU);
+        }else{
+            locale  = new Locale(Constant.LANGUAGE_EN);
+        }
+
+        s.setAttribute("locale", locale);
+//        System.out.println("ЯЗЫК Установили >>> "+resourceBundle.toString());
+    }
+
+    public static void openStartPage(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
+        HttpSession s = req.getSession();
+        Locale locale = (Locale) s.getAttribute("locale");
+        ResourceBundle rb = ResourceBundle.getBundle("MyBundle", locale);
+
+        System.out.println(rb.getString(Constant.RESOURCE_KEY_STARTFORM_LOG_IN));
+
+        String LogIn = new String(rb.getString(Constant.RESOURCE_KEY_STARTFORM_LOG_IN).getBytes("ISO-8859-1"), "UTF-8");
+        String username = new String(rb.getString(Constant.RESOURCE_KEY_STARTFORM_LOGIN).getBytes("ISO-8859-1"), "UTF-8");
+        String password = new String(rb.getString(Constant.RESOURCE_KEY_STARTFORM_PASSWORD).getBytes("ISO-8859-1"), "UTF-8");
+        String infoString = new String(rb.getString(Constant.RESOURCE_KEY_STARTFORM_INFO).getBytes("ISO-8859-1"), "UTF-8");
+        String enter = new String(rb.getString(Constant.RESOURCE_KEY_STARTFORM_ENTER).getBytes("ISO-8859-1"), "UTF-8");
+        String forgot = new String(rb.getString(Constant.RESOURCE_KEY_STARTFORM_FORGOT).getBytes("ISO-8859-1"), "UTF-8");
+        String changeLanguage = new String(rb.getString(Constant.RESOURCE_KEY_STARTFORM_LANG).getBytes("ISO-8859-1"), "UTF-8");
+
+
+        req.setAttribute("LogIn",LogIn);
+        req.setAttribute("username",username);
+        req.setAttribute("password",password);
+        req.setAttribute("infoString",infoString);
+        req.setAttribute("enter",enter);
+        req.setAttribute("forgot",forgot);
+        req.setAttribute("changeLanguage",changeLanguage);
+
+        RequestDispatcher rd = req.getRequestDispatcher(Path.PAGE_START_PAGE);
+        rd.forward(req, resp);
+    }
+
+    public static void setAttributeAdminPage(HttpServletRequest req) throws UnsupportedEncodingException {
+
+        HttpSession s = req.getSession();
+        Locale locale = (Locale) s.getAttribute("locale");
+        ResourceBundle rb = ResourceBundle.getBundle("MyBundle", locale);
+
+        String administrator = new String(rb.getString(Constant.RESOURCE_KEY_ADMIN_PAGE_ADMINISTRATOR).getBytes("ISO-8859-1"), "UTF-8");
+        String newAdmin = new String(rb.getString(Constant.RESOURCE_KEY_ADMIN_PAGE_NEW_ADMIN).getBytes("ISO-8859-1"), "UTF-8");
+        String allTariff = new String(rb.getString(Constant.RESOURCE_KEY_ADMIN_PAGE_ALL_T).getBytes("ISO-8859-1"), "UTF-8");
+        String descript = new String(rb.getString(Constant.RESOURCE_KEY_ADMIN_PAGE_DESCRIPTION).getBytes("ISO-8859-1"), "UTF-8");
+        String changeT = new String(rb.getString(Constant.RESOURCE_KEY_ADMIN_PAGE_CHNGE_T).getBytes("ISO-8859-1"), "UTF-8");
+        String delTariff = new String(rb.getString(Constant.RESOURCE_KEY_ADMIN_PAGE_DELETE_T).getBytes("ISO-8859-1"), "UTF-8");
+        String newTariff = new String(rb.getString(Constant.RESOURCE_KEY_ADMIN_PAGE_NEW_T).getBytes("ISO-8859-1"), "UTF-8");
+        String tableService = new String(rb.getString(Constant.RESOURCE_KEY_ADMIN_PAGE_TABLE_SERVICE).getBytes("ISO-8859-1"), "UTF-8");
+        String id = new String(rb.getString(Constant.RESOURCE_KEY_ADMIN_PAGE_ID).getBytes("ISO-8859-1"), "UTF-8");
+        String changeS = new String(rb.getString(Constant.RESOURCE_KEY_ADMIN_PAGE_CHANGE_S).getBytes("ISO-8859-1"), "UTF-8");
+        String openTforS = new String(rb.getString(Constant.RESOURCE_KEY_ADMIN_PAGE_OPEN_T_FOR_S).getBytes("ISO-8859-1"), "UTF-8");
+        String deleteS = new String(rb.getString(Constant.RESOURCE_KEY_ADMIN_PAGE_DELETE_S).getBytes("ISO-8859-1"), "UTF-8");
+        String newS = new String(rb.getString(Constant.RESOURCE_KEY_ADMIN_PAGE_NEW_S).getBytes("ISO-8859-1"), "UTF-8");
+        String sorted = new String(rb.getString(Constant.RESOURCE_KEY_ADMIN_PAGE_SORTED).getBytes("ISO-8859-1"), "UTF-8");
+        String tableU = new String(rb.getString(Constant.RESOURCE_KEY_ADMIN_PAGE_TABLE_U).getBytes("ISO-8859-1"), "UTF-8");
+        String fio = new String(rb.getString(Constant.RESOURCE_KEY_ADMIN_PAGE_FIO).getBytes("ISO-8859-1"), "UTF-8");
+        String balance = new String(rb.getString(Constant.RESOURCE_KEY_ADMIN_PAGE_BALANCE).getBytes("ISO-8859-1"), "UTF-8");
+        String tell = new String(rb.getString(Constant.RESOURCE_KEY_ADMIN_PAGE_TELL).getBytes("ISO-8859-1"), "UTF-8");
+        String editU = new String(rb.getString(Constant.RESOURCE_KEY_ADMIN_PAGE_EDIT_U).getBytes("ISO-8859-1"), "UTF-8");
+        String newU = new String(rb.getString(Constant.RESOURCE_KEY_ADMIN_PAGE_NEW_U).getBytes("ISO-8859-1"), "UTF-8");
+        String exit = new String(rb.getString(Constant.RESOURCE_KEY_ADMIN_PAGE_EXIT).getBytes("ISO-8859-1"), "UTF-8");
+        String name = new String(rb.getString(Constant.RESOURCE_KEY_ADMIN_PAGE_NAME).getBytes("ISO-8859-1"), "UTF-8");
+        String price = new String(rb.getString(Constant.RESOURCE_KEY_ADMIN_PAGE_PRICE).getBytes("ISO-8859-1"), "UTF-8");
+        String login = new String(rb.getString(Constant.RESOURCE_KEY_ADMIN_PAGE_LOGIN).getBytes("ISO-8859-1"), "UTF-8");
+        String adress = new String(rb.getString(Constant.RESOURCE_KEY_ADMIN_PAGE_ADRESS).getBytes("ISO-8859-1"), "UTF-8");
+        String block = new String(rb.getString(Constant.RESOURCE_KEY_ADMIN_PAGE_BLOCK).getBytes("ISO-8859-1"), "UTF-8");
+        String username = new String(rb.getString(Constant.RESOURCE_KEY_ADMIN_PAGE_USERNAME).getBytes("ISO-8859-1"), "UTF-8");
+
+
+        req.setAttribute("administrator",administrator);
+        req.setAttribute("newAdmin",newAdmin);
+        req.setAttribute("allTariff",allTariff);
+        req.setAttribute("descript",descript);
+        req.setAttribute("changeT",changeT);
+        req.setAttribute("delTariff",delTariff);
+        req.setAttribute("newTariff",newTariff);
+        req.setAttribute("tableService",tableService);
+        req.setAttribute("id",id);
+        req.setAttribute("name",name);
+        req.setAttribute("username",username);
+        req.setAttribute("price",price);
+        req.setAttribute("changeS",changeS);
+        req.setAttribute("openTforS",openTforS);
+        req.setAttribute("deleteS",deleteS);
+        req.setAttribute("newS",newS);
+        req.setAttribute("sorted",sorted);
+        req.setAttribute("tableU",tableU);
+        req.setAttribute("login",login);
+        req.setAttribute("fio",fio);
+        req.setAttribute("balance",balance);
+        req.setAttribute("tell",tell);
+        req.setAttribute("adress",adress);
+        req.setAttribute("block",block);
+        req.setAttribute("editU",editU);
+        req.setAttribute("newU",newU);
+        req.setAttribute("exit",exit);
+    }
+
+    public static void setAttributeUserPage(HttpServletRequest req, HttpServletResponse resp) throws UnsupportedEncodingException {
+
+        HttpSession s = req.getSession();
+        Locale locale = (Locale) s.getAttribute("locale");
+        ResourceBundle rb = ResourceBundle.getBundle("MyBundle", locale);
+
+        String user = new String(rb.getString(Constant.RESOURCE_KEY_USER_PAGE_USER).getBytes("ISO-8859-1"), "UTF-8");
+        String downlMyTariff = new String(rb.getString(Constant.RESOURCE_KEY_USER_PAGE_DOWNL_MY_T).getBytes("ISO-8859-1"), "UTF-8");
+        String downlAllTariff = new String(rb.getString(Constant.RESOURCE_KEY_USER_PAGE_DOWNL_ALL).getBytes("ISO-8859-1"), "UTF-8");
+        String status = new String(rb.getString(Constant.RESOURCE_KEY_USER_PAGE_STATUS).getBytes("ISO-8859-1"), "UTF-8");
+        String allMoneyToCosts = new String(rb.getString(Constant.RESOURCE_KEY_USER_PAGE_ALL_MONEY_TO_COSTS).getBytes("ISO-8859-1"), "UTF-8");
+        String pay = new String(rb.getString(Constant.RESOURCE_KEY_USER_PAGE_PAY).getBytes("ISO-8859-1"), "UTF-8");
+        String myTariff = new String(rb.getString(Constant.RESOURCE_KEY_USER_PAGE_MY_TARIFF).getBytes("ISO-8859-1"), "UTF-8");
+        String myService = new String(rb.getString(Constant.RESOURCE_KEY_USER_PAGE_MY_SERVICE).getBytes("ISO-8859-1"), "UTF-8");
+        String allService = new String(rb.getString(Constant.RESOURCE_KEY_USER_PAGE_ALL_SERVICE).getBytes("ISO-8859-1"), "UTF-8");
+        String openTariff = new String(rb.getString(Constant.RESOURCE_KEY_USER_PAGE_OPEN_TARIFF).getBytes("ISO-8859-1"), "UTF-8");
+        String balance = new String(rb.getString(Constant.RESOURCE_KEY_ADMIN_PAGE_BALANCE).getBytes("ISO-8859-1"), "UTF-8");
+        String login = new String(rb.getString(Constant.RESOURCE_KEY_ADMIN_PAGE_LOGIN).getBytes("ISO-8859-1"), "UTF-8");
+        String name = new String(rb.getString(Constant.RESOURCE_KEY_ADMIN_PAGE_NAME).getBytes("ISO-8859-1"), "UTF-8");
+        String tell = new String(rb.getString(Constant.RESOURCE_KEY_ADMIN_PAGE_TELL).getBytes("ISO-8859-1"), "UTF-8");
+        String adress = new String(rb.getString(Constant.RESOURCE_KEY_ADMIN_PAGE_ADRESS).getBytes("ISO-8859-1"), "UTF-8");
+        String id = new String(rb.getString(Constant.RESOURCE_KEY_ADMIN_PAGE_ID).getBytes("ISO-8859-1"), "UTF-8");
+        String username = new String(rb.getString(Constant.RESOURCE_KEY_ADMIN_PAGE_USERNAME).getBytes("ISO-8859-1"), "UTF-8");
+        String price = new String(rb.getString(Constant.RESOURCE_KEY_ADMIN_PAGE_PRICE).getBytes("ISO-8859-1"), "UTF-8");
+        String descript = new String(rb.getString(Constant.RESOURCE_KEY_ADMIN_PAGE_DESCRIPTION).getBytes("ISO-8859-1"), "UTF-8");
+        String delTariff = new String(rb.getString(Constant.RESOURCE_KEY_ADMIN_PAGE_DELETE_T).getBytes("ISO-8859-1"), "UTF-8");
+        String sorted = new String(rb.getString(Constant.RESOURCE_KEY_ADMIN_PAGE_SORTED).getBytes("ISO-8859-1"), "UTF-8");
+        String exit = new String(rb.getString(Constant.RESOURCE_KEY_ADMIN_PAGE_EXIT).getBytes("ISO-8859-1"), "UTF-8");
+
+        req.setAttribute("user",user);
+        req.setAttribute("downlMyTariff",downlMyTariff);
+        req.setAttribute("downlAllTariff",downlAllTariff);
+        req.setAttribute("status",status);
+        req.setAttribute("allMoneyToCosts",allMoneyToCosts);
+        req.setAttribute("pay",pay);
+        req.setAttribute("myTariff",myTariff);
+        req.setAttribute("myService",myService);
+        req.setAttribute("allService",allService);
+        req.setAttribute("openTariff",openTariff);
+        req.setAttribute("balance",balance);
+        req.setAttribute("login",login);
+        req.setAttribute("adress",adress);
+        req.setAttribute("username",username);
+        req.setAttribute("name",name);
+        req.setAttribute("id",id);
+        req.setAttribute("tell",tell);
+        req.setAttribute("price",price);
+        req.setAttribute("descript",descript);
+        req.setAttribute("delTariff",delTariff);
+        req.setAttribute("sorted",sorted);
+        req.setAttribute("exit",exit);
+
+
+
+    }
+
+    public static void setAttributeTariffPage(HttpServletRequest req, HttpServletResponse resp) throws UnsupportedEncodingException {
+        HttpSession s = req.getSession();
+        Locale locale = (Locale) s.getAttribute("locale");
+        ResourceBundle rb = ResourceBundle.getBundle("MyBundle", locale);
+
+
+        String tariff = new String(rb.getString(Constant.RESOURCE_KEY_USER_PAGE_TARIFF).getBytes("ISO-8859-1"), "UTF-8");
+        String addInMyT = new String(rb.getString(Constant.RESOURCE_KEY_USER_PAGE_TARIFF_ADD_IN_MY_TARIFF).getBytes("ISO-8859-1"), "UTF-8");
+        String back = new String(rb.getString(Constant.RESOURCE_KEY_USER_BACK).getBytes("ISO-8859-1"), "UTF-8");
+        String id = new String(rb.getString(Constant.RESOURCE_KEY_ADMIN_PAGE_ID).getBytes("ISO-8859-1"), "UTF-8");
+        String name = new String(rb.getString(Constant.RESOURCE_KEY_ADMIN_PAGE_NAME).getBytes("ISO-8859-1"), "UTF-8");
+        String price = new String(rb.getString(Constant.RESOURCE_KEY_ADMIN_PAGE_PRICE).getBytes("ISO-8859-1"), "UTF-8");
+        String descript = new String(rb.getString(Constant.RESOURCE_KEY_ADMIN_PAGE_DESCRIPTION).getBytes("ISO-8859-1"), "UTF-8");
+
+        req.setAttribute("tariff",tariff);
+        req.setAttribute("id",id);
+        req.setAttribute("name",name);
+        req.setAttribute("price",price);
+        req.setAttribute("descript",descript);
+        req.setAttribute("addInMyT",addInMyT);
+        req.setAttribute("back",back);
+    }
+
+    public static void setAttributeNewAdminPage(HttpServletRequest req, HttpServletResponse resp) throws UnsupportedEncodingException {
+        HttpSession s = req.getSession();
+        Locale locale = (Locale) s.getAttribute("locale");
+        ResourceBundle rb = ResourceBundle.getBundle("MyBundle", locale);
+
+        String newAdmin = new String(rb.getString(Constant.RESOURCE_KEY_ADMIN_PAGE_NEW_ADMIN).getBytes("ISO-8859-1"), "UTF-8");
+        String username = new String(rb.getString(Constant.RESOURCE_KEY_ADMIN_PAGE_USERNAME).getBytes("ISO-8859-1"), "UTF-8");
+        String password = new String(rb.getString(Constant.RESOURCE_KEY_STARTFORM_PASSWORD).getBytes("ISO-8859-1"), "UTF-8");
+        String fio = new String(rb.getString(Constant.RESOURCE_KEY_ADMIN_PAGE_FIO).getBytes("ISO-8859-1"), "UTF-8");
+        String tell = new String(rb.getString(Constant.RESOURCE_KEY_ADMIN_PAGE_TELL).getBytes("ISO-8859-1"), "UTF-8");
+        String adress = new String(rb.getString(Constant.RESOURCE_KEY_ADMIN_PAGE_ADRESS).getBytes("ISO-8859-1"), "UTF-8");
+        String addAdmin = new String(rb.getString(Constant.RESOURCE_KEY_NEW_ADMIN_PAGE).getBytes("ISO-8859-1"), "UTF-8");
+        String back = new String(rb.getString(Constant.RESOURCE_KEY_USER_BACK).getBytes("ISO-8859-1"), "UTF-8");
+
+
+        req.setAttribute("newAdmin",newAdmin);
+        req.setAttribute("login",username);
+        req.setAttribute("password",password);
+        req.setAttribute("fio",fio);
+        req.setAttribute("tell",tell);
+        req.setAttribute("adress",adress);
+        req.setAttribute("addAdmin",addAdmin);
+        req.setAttribute("back",back);
+    }
+
+    public static void setAttributeNewUserPage(HttpServletRequest req, HttpServletResponse resp) throws UnsupportedEncodingException {
+        HttpSession s = req.getSession();
+        Locale locale = (Locale) s.getAttribute("locale");
+        ResourceBundle rb = ResourceBundle.getBundle("MyBundle", locale);
+
+        String newUser = new String(rb.getString(Constant.RESOURCE_KEY_ADMIN_PAGE_NEW_USER).getBytes("ISO-8859-1"), "UTF-8");
+        String username = new String(rb.getString(Constant.RESOURCE_KEY_ADMIN_PAGE_USERNAME).getBytes("ISO-8859-1"), "UTF-8");
+        String password = new String(rb.getString(Constant.RESOURCE_KEY_STARTFORM_PASSWORD).getBytes("ISO-8859-1"), "UTF-8");
+        String fio = new String(rb.getString(Constant.RESOURCE_KEY_ADMIN_PAGE_FIO).getBytes("ISO-8859-1"), "UTF-8");
+        String balance = new String(rb.getString(Constant.RESOURCE_KEY_ADMIN_PAGE_BALANCE).getBytes("ISO-8859-1"), "UTF-8");
+        String tell = new String(rb.getString(Constant.RESOURCE_KEY_ADMIN_PAGE_TELL).getBytes("ISO-8859-1"), "UTF-8");
+        String adress = new String(rb.getString(Constant.RESOURCE_KEY_ADMIN_PAGE_ADRESS).getBytes("ISO-8859-1"), "UTF-8");
+        String addUser = new String(rb.getString(Constant.RESOURCE_KEY_NEW_USER_PAGE).getBytes("ISO-8859-1"), "UTF-8");
+        String back = new String(rb.getString(Constant.RESOURCE_KEY_USER_BACK).getBytes("ISO-8859-1"), "UTF-8");
+        String save = new String(rb.getString(Constant.RESOURCE_KEY_SAVE).getBytes("ISO-8859-1"), "UTF-8");
+
+
+        req.setAttribute("newUser",newUser);
+        req.setAttribute("login",username);
+        req.setAttribute("password",password);
+        req.setAttribute("fio",fio);
+        req.setAttribute("balance",balance);
+        req.setAttribute("tell",tell);
+        req.setAttribute("adress",adress);
+        req.setAttribute("addUser",addUser);
+        req.setAttribute("back",back);
+        req.setAttribute("save",save);
+    }
+
+    public static void setAttributeEditTAriffPage(HttpServletRequest req, HttpServletResponse resp) throws UnsupportedEncodingException {
+        HttpSession s = req.getSession();
+        Locale locale = (Locale) s.getAttribute("locale");
+        ResourceBundle rb = ResourceBundle.getBundle("MyBundle", locale);
+
+        String changeS = new String(rb.getString(Constant.RESOURCE_KEY_ADMIN_PAGE_CHANGE_S).getBytes("ISO-8859-1"), "UTF-8");
+        String neweS = new String(rb.getString(Constant.RESOURCE_KEY_USER_PAGE_SERVICE).getBytes("ISO-8859-1"), "UTF-8");
+        String name = new String(rb.getString(Constant.RESOURCE_KEY_ADMIN_PAGE_NAME).getBytes("ISO-8859-1"), "UTF-8");
+        String save = new String(rb.getString(Constant.RESOURCE_KEY_SAVE).getBytes("ISO-8859-1"), "UTF-8");
+        String descript = new String(rb.getString(Constant.RESOURCE_KEY_ADMIN_PAGE_DESCRIPTION).getBytes("ISO-8859-1"), "UTF-8");
+        String back = new String(rb.getString(Constant.RESOURCE_KEY_USER_BACK).getBytes("ISO-8859-1"), "UTF-8");
+
+
+        req.setAttribute("changeS",changeS);
+        req.setAttribute("neweS",neweS);
+        req.setAttribute("name",name);
+        req.setAttribute("descript",descript);
+        req.setAttribute("save",save);
+        req.setAttribute("back",back);
+
+    }
+
+                //ничего не трогать работает
+    public static void setAttributeEditServicePage(HttpServletRequest req, HttpServletResponse resp) throws UnsupportedEncodingException {
+        HttpSession s = req.getSession();
+        Locale locale = (Locale) s.getAttribute("locale");
+        ResourceBundle rb = ResourceBundle.getBundle("MyBundle", locale);
+
+        String changeS = new String(rb.getString(Constant.RESOURCE_KEY_ADMIN_PAGE_CHANGE_S).getBytes("ISO-8859-1"), "UTF-8");
+        String newS = new String(rb.getString(Constant.RESOURCE_KEY_USER_PAGE_TARIFF).getBytes("ISO-8859-1"), "UTF-8");
+        String name = new String(rb.getString(Constant.RESOURCE_KEY_ADMIN_PAGE_NAME).getBytes("ISO-8859-1"), "UTF-8");
+        String priceT = new String(rb.getString(Constant.RESOURCE_KEY_ADMIN_PAGE_PRICE).getBytes("ISO-8859-1"), "UTF-8");
+        String save = new String(rb.getString(Constant.RESOURCE_KEY_SAVE).getBytes("ISO-8859-1"), "UTF-8");
+        String descript = new String(rb.getString(Constant.RESOURCE_KEY_ADMIN_PAGE_DESCRIPTION).getBytes("ISO-8859-1"), "UTF-8");
+        String back = new String(rb.getString(Constant.RESOURCE_KEY_USER_BACK).getBytes("ISO-8859-1"), "UTF-8");
+
+
+        req.setAttribute("changeS",changeS);
+        req.setAttribute("newS",newS);
+        req.setAttribute("name",name);
+        req.setAttribute("priceT",priceT);
+        req.setAttribute("descript",descript);
+        req.setAttribute("save",save);
+        req.setAttribute("back",back);
+
+    }
+
+    public static void setAttributeEditUserPage(HttpServletRequest req, HttpServletResponse resp) throws UnsupportedEncodingException {
+        HttpSession s = req.getSession();
+        Locale locale = (Locale) s.getAttribute("locale");
+        ResourceBundle rb = ResourceBundle.getBundle("MyBundle", locale);
+
+        String newUser2 = new String(rb.getString(Constant.RESOURCE_KEY_ADMIN_PAGE_NEW_USER).getBytes("ISO-8859-1"), "UTF-8");
+        String username2 = new String(rb.getString(Constant.RESOURCE_KEY_ADMIN_PAGE_USERNAME).getBytes("ISO-8859-1"), "UTF-8");
+        String password2 = new String(rb.getString(Constant.RESOURCE_KEY_STARTFORM_PASSWORD).getBytes("ISO-8859-1"), "UTF-8");
+        String fio2 = new String(rb.getString(Constant.RESOURCE_KEY_ADMIN_PAGE_FIO).getBytes("ISO-8859-1"), "UTF-8");
+        String balance2 = new String(rb.getString(Constant.RESOURCE_KEY_ADMIN_PAGE_BALANCE).getBytes("ISO-8859-1"), "UTF-8");
+        String tell2 = new String(rb.getString(Constant.RESOURCE_KEY_ADMIN_PAGE_TELL).getBytes("ISO-8859-1"), "UTF-8");
+        String adress2 = new String(rb.getString(Constant.RESOURCE_KEY_ADMIN_PAGE_ADRESS).getBytes("ISO-8859-1"), "UTF-8");
+        String addUser2 = new String(rb.getString(Constant.RESOURCE_KEY_NEW_USER_PAGE).getBytes("ISO-8859-1"), "UTF-8");
+        String back2 = new String(rb.getString(Constant.RESOURCE_KEY_USER_BACK).getBytes("ISO-8859-1"), "UTF-8");
+        String save2 = new String(rb.getString(Constant.RESOURCE_KEY_SAVE).getBytes("ISO-8859-1"), "UTF-8");
+
+
+        req.setAttribute("newUser2",newUser2);
+        req.setAttribute("login2",username2);
+        req.setAttribute("password2",password2);
+        req.setAttribute("fio2",fio2);
+        req.setAttribute("balance2",balance2);
+        req.setAttribute("tell2",tell2);
+        req.setAttribute("adress2",adress2);
+        req.setAttribute("addUser2",addUser2);
+        req.setAttribute("back2",back2);
+        req.setAttribute("save2",save2);
+    }
+
+
+
+
 }

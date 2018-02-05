@@ -1,11 +1,4 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: Olga
-  Date: 13.01.2018
-  Time: 15:56
-  To change this template use File | Settings | File Templates.
---%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@page pageEncoding="UTF-8" contentType="text/html; charset=UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
@@ -13,29 +6,29 @@
 </head>
 <body>
 <form action="/userServlet" method="get">
-    <p align="center"><h1>User:  <c:out value="${nameUser}"></c:out></h1></p><br>
-    <input type="submit" name="downloadTAriff" value="Download My tariff"><input type="submit" name="downloadAllTAriff" value="Download All tariff"><br>
-    <c:out value="Status:  ${statusUser}"></c:out><br>
-    <c:out value="Balance:  ${balanceUser}"></c:out><br>
-    <c:out value="Login - ${loginUser}"></c:out><br>
-    <c:out value="tel.:  ${tellUser}"></c:out><br>
-    <c:out value="Adress:  ${adressUser}"></c:out><br>
-    <c:out value="All money to costs: ${allMoney}"></c:out><br>
+    <p align="center"><h1>${user}:  <c:out value="${nameUser}"></c:out></h1></p><br>
+    <input type="submit" name="downloadTAriff" value="${downlMyTariff}"><input type="submit" name="downloadAllTAriff" value="${downlAllTariff}"><br>
+    <c:out value="${status}:  ${statusUser}"></c:out><br>
+    <c:out value="${balance}:  ${balanceUser}"></c:out><br>
+    <c:out value="${username} - ${loginUser}"></c:out><br>
+    <c:out value="${tell}:  ${tellUser}"></c:out><br>
+    <c:out value="${adress}:  ${adressUser}"></c:out><br>
+    <c:out value="${allMoneyToCosts}: ${allMoney}"></c:out><br>
     </form>
 <form action="/userServlet" method="post">
-    <input type="submit" name="pay" value="PAY">
+    <input type="submit" name="pay" value="${pay}">
 </form>
 <form action="/userServlet" method="get">
     <br>
     <br>
-    <h1>My tariff</h1>
+    <h1>${myTariff}</h1>
     <br>
     <TABLE BORDER>
         <TR>
-            <TD>ID</TD>
-            <TD>Name</TD>
-            <TD>Price</TD>
-            <TD>Description</TD>
+            <TD>${id}</TD>
+            <TD>${name}</TD>
+            <TD>${price}</TD>
+            <TD>${descript}</TD>
         </TR>
         <c:forEach var="p" items="${arrServiceForUser}">
             <TR>
@@ -54,7 +47,7 @@
         </c:forEach>
     </select>
 
-    <input type="submit" name="deleteService" value="Delete tariff">
+    <input type="submit" name="deleteService" value="${delTariff}">
     <br>
    <select name="sort" size="1">
         <option name="nameAZ" >Name A-Z</option>
@@ -63,16 +56,16 @@
         <option name="price21">Price 9-1</option>
     </select>
 
-    <input type="submit" name="sorted" value="Sorted">
+    <input type="submit" name="sorted" value="${sorted}">
     <br>
     <br>
-    <h1>My service</h1>
+    <h1>${myService}</h1>
     <TABLE BORDER>
         <TR>
-            <TD>ID</TD>
-            <TD>Name</TD>
+            <TD>${id}</TD>
+            <TD>${name}</TD>
             <%--<TD>Price</TD>--%>
-            <TD>Description</TD>
+            <TD>${descript}</TD>
         </TR>
         <c:forEach var="p" items="${arrTariff}">
             <TR>
@@ -94,13 +87,13 @@
 
 
     <br>
-    <h1>All services</h1>
+    <h1>${allService}</h1>
     <TABLE BORDER>
         <TR>
-            <TD>ID</TD>
-            <TD>Name</TD>
+            <TD>${id}</TD>
+            <TD>${name}</TD>
             <%--<TD>Price</TD>--%>
-            <TD>Comment</TD>
+            <TD>${descript}</TD>
         </TR>
         <c:forEach var="p" items="${otherTariffs}">
             <TR>
@@ -119,9 +112,9 @@
 
         </c:forEach>
     </select>
-    <input type="submit" name="openTariff" value="Open tariff">
+    <input type="submit" name="openTariff" value="${openTariff}">
     <br>
-    <input type="submit" name="exit" value="exit"><br>
+    <input type="submit" name="exit" value="${exit}"><br>
 </form>
 </body>
 

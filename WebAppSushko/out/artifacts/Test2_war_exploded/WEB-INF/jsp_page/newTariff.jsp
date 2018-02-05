@@ -1,13 +1,8 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: Olga
-  Date: 15.01.2018
-  Time: 16:43
-  To change this template use File | Settings | File Templates.
---%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@page pageEncoding="UTF-8" contentType="text/html; charset=UTF-8"%>
+
 <html>
 <head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" charset="UTF-8">
     <title>New tariff</title>
 </head>
 <body>
@@ -17,21 +12,21 @@
     <br>
 
 
-    <h1 align="center">New tariff</h1>
+    <h1 align="center">${neweS}</h1>
 
     <p align="center">
-        <input type="text" name="nameTariff" placeholder="Name tarif" required>
+        <input type="text" name="nameTariff" placeholder="${name}" required>
     </p>
     <%--<p align="center">--%>
         <%--<input type="text" name="price" placeholder="Price" required>--%>
     <%--</p>--%>
     <p align="center">
-        <input type="text" name="comment" placeholder="Description" required>
+        <input type="text" name="comment" placeholder="${descript}" required>
     </p>
 
     <p align="center">
-        <input type="submit" name="addTariff" value="Add Tariff">
-        <input type="button" name="cancel" value="Cancel" onclick="history.back();">
+        <input type="submit" name="addTariff" value="${save}">
+        <input type="button" name="cancel" value="${back}" onclick="history.back();">
 
     </p><br>
 </form>

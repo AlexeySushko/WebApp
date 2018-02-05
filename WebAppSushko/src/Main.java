@@ -1,5 +1,7 @@
 
 import java.util.List;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 public class Main {
     private static <T> void printList(List<T> list) {
@@ -12,6 +14,14 @@ public class Main {
     public static void main(String [] args) {
 
 
+
+
+        Locale locale  = new Locale(Constant.LANGUAGE_EN);
+        ResourceBundle rb = ResourceBundle.getBundle("MyBundle",locale);
+
+        System.out.println(rb.getString(Constant.RESOURCE_KEY_STARTFORM_LOG_IN));
+        System.out.println(rb.getString(Constant.RESOURCE_KEY_STARTFORM_LOGIN));
+        System.out.println(rb.getString(Constant.RESOURCE_KEY_STARTFORM_PASSWORD));
 
 //        System.out.println("admin "+ Utilities.decryptText("admin"));
 //        System.out.println("admin "+ Utilities.encryptText("admin"));

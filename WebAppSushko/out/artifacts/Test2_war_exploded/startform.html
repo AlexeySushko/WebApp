@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html>
 
 <head>
@@ -17,22 +18,34 @@
 
   <div class="login-card">
   
-    <br><br><br><br><br><br><h1 align="center">Log-in</h1>
+    <br><br><br><br><br><br><h1 align="center">Авторизация</h1>
   <form action="/start" method="post">
   <p align="center">
-    <input type="text" name="user" placeholder="Username" required>
+    <input type="text" name="user" placeholder="Логин" required pattern="[а-яА-Я\w]{4,8}">
 	</p>
 	<p align="center">
-    <input type="password" name="pass" placeholder="Password" required>
+    <input type="password" name="pass" placeholder="Пароль" required pattern="[а-яА-Я\w]{4,8}" >
 	</p>
+      <p align="center">"Логин и Пароль длинной 4-8 символов"</p>
 	<p align="center">
-    <input type="submit" name="enter" class="login login-submit" value="Enter">
+    <input type="submit" name="enter" class="login login-submit" value="Войти">
 	</p><br>
+
   </form>
+    <form action="/start" method="post">
+      <p align="center">
+      <select name="changeLanguage" size="1">
+
+        <option name="English">English</option>
+        <option name="Русский">Русский</option>
+
+      </select><input type="submit" name="changeLang" value="Изменить язык">
+      </p>
+    </form>
 
   <div class="login-help" align="center">
   
-    <a href="http://localhost:8080/forgot.html">Forgot Password</a>
+    <a href="http://localhost:8080/forgot.html">Забыли пароль?</a>
   </div>
 </div>
 

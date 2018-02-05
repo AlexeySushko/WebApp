@@ -7,8 +7,12 @@ import entity.User;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 
 public class DBManager {
+
+
+
     private static final String URL = "jdbc:mysql://localhost:3306/FinalProject" + "?user=root&password=12345";
 
     private static final String SQL_FIND_USER_BY_LOGIN = "SELECT * FROM users WHERE login=?";
@@ -89,12 +93,19 @@ public class DBManager {
 
 
     public Connection getConnection() throws SQLException {
+        Properties connInfo = new Properties();
+
+
+
+        connInfo.put("useUnicode","true");
+        connInfo.put("characterEncoding","utf8");
+
         try {
             Class.forName("com.mysql.jdbc.Driver");
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
-        Connection con = DriverManager.getConnection(URL);
+        Connection con = DriverManager.getConnection(URL,connInfo);
         return con;
     }
 
@@ -379,6 +390,8 @@ public class DBManager {
 
         try {
             con = getConnection();
+
+
             pstmt = con.prepareStatement(SQL_CREATE_NEW_TARIFF,
                     Statement.RETURN_GENERATED_KEYS);
 

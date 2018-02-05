@@ -41,19 +41,23 @@ public class Logic {
 
         if (req.getParameter("exit") != null) {
             s.removeAttribute("currentUser");
-
-            RequestDispatcher rd = req.getRequestDispatcher(Path.PAGE_START_PAGE);
-            rd.forward(req, resp);
+            Method.openStartPage(req, resp);
+//            RequestDispatcher rd = req.getRequestDispatcher(Path.PAGE_START_PAGE);
+//            rd.forward(req, resp);
         }if (req.getParameter("pay") != null) {
             //!!!ПЕРЕСЧИТАТЬ ДАННЫЕ
             System.out.println("ПЕРЕСЧИТАТЬ ДАННЫЕ");
         }if (req.getParameter("useTarif") != null) {
             req = Method.addTariffForUser(req, resp);
+            Method.setAttributeUserPage(req,resp);
+
             RequestDispatcher rd = req.getRequestDispatcher(Path.PAGE_USER_PAGE);
             rd.forward(req, resp);
             System.out.println("CLICK USE");
         }if (req.getParameter("deleteTarif") != null) {
             req = Method.deleteTariffForUser(req, resp);
+            Method.setAttributeUserPage(req,resp);
+
             RequestDispatcher rd = req.getRequestDispatcher(Path.PAGE_USER_PAGE);
             rd.forward(req, resp);
             System.out.println("CLICK USE");
@@ -61,6 +65,7 @@ public class Logic {
 
             ArrayList<Service> allServiceForTariff = db.allServiceForTarif(req.getParameter("selectTafiff"));
             req.setAttribute("allServiceForTariff", allServiceForTariff);
+            Method.setAttributeTariffPage(req, resp);
             RequestDispatcher rd = req.getRequestDispatcher(Path.PAGE_USER_PAGE_SERVICE_FOR_ONE_TARIFF);
             rd.forward(req, resp);
         }if (req.getParameter("sorted") != null) {
@@ -68,6 +73,7 @@ public class Logic {
             req = Method.createReqForUser(req);
             ArrayList<Service> arrServiceForUser = db.searchServiceForUser(user);
             req = Method.sortService(req, arrServiceForUser);
+            Method.setAttributeUserPage(req,resp);
             RequestDispatcher rd = req.getRequestDispatcher(Path.PAGE_USER_PAGE);
             rd.forward(req, resp);
 
@@ -83,6 +89,7 @@ public class Logic {
 
                 System.out.println("SERVICE ADED>> ");
                 req = Method.createReqForUser(req);
+                Method.setAttributeUserPage(req,resp);
                 RequestDispatcher rd = req.getRequestDispatcher(Path.PAGE_USER_PAGE);
                 rd.forward(req, resp);
 
@@ -94,6 +101,8 @@ public class Logic {
         if (req.getParameter("downloadTAriff") != null) {
             ArrayList<Service> arrServiceForUser = db.searchServiceForUser(user);
             Method.writeFile(user.getLogin(), Method.createFileForUser(user,arrServiceForUser));
+            req = Method.createReqForUser(req);
+            Method.setAttributeUserPage(req,resp);
             RequestDispatcher rd = req.getRequestDispatcher(Path.PAGE_USER_PAGE);
             rd.forward(req, resp);
 
@@ -125,6 +134,7 @@ public class Logic {
 
                 System.out.println("SERVICE ADED>> ");
                 req = Method.createReqForUser(req);
+                Method.setAttributeUserPage(req,resp);
                 RequestDispatcher rd = req.getRequestDispatcher(Path.PAGE_USER_PAGE);
                 rd.forward(req, resp);
 
@@ -211,6 +221,7 @@ public class Logic {
                 req.setAttribute("arrTariff", tariffs);
                 req.setAttribute("allService", allService);
                 req.setAttribute("nameAdmin", user.getFio());
+                Method.setAttributeAdminPage(req);
                 RequestDispatcher rd = req.getRequestDispatcher(Path.PAGE_ADMIN_PAGE);
                 rd.forward(req, resp);
 
@@ -220,6 +231,7 @@ public class Logic {
                 //ПОЛУЧИТЬ ДЛЯ ПОЛЬЗОВАТЕЛЯ ЕГО ТАРИФ В AreayListe  И ВЫВЕСТИ ОТДЕЛЬНОЙ ТАБЛИЧКОЙ
                 //получим тарифы для данного пользователя
                 req = Method.createReqForUser(req);
+                Method.setAttributeUserPage(req, resp);
                 RequestDispatcher rd = req.getRequestDispatcher(Path.PAGE_USER_PAGE);
                 rd.forward(req, resp);
             }
@@ -241,6 +253,7 @@ public class Logic {
         HttpSession s = req.getSession();
 
         if (req.getParameter("newUser") != null) {
+            Method.setAttributeNewUserPage(req,resp);
             RequestDispatcher rd = req.getRequestDispatcher(Path.PAGE_NEW_USER_PAGE);
             rd.forward(req, resp);
         }
@@ -251,18 +264,21 @@ public class Logic {
             User user = db.findOneUser(Integer.parseInt(req.getParameter("numberUserChange")));
             //Заполним форму для редактирования
             req.setAttribute("login", user.getLogin());
-            req.setAttribute("pass", user.getPass());
+            System.out.println(Utilities.decryptText(user.getPass()));
+            req.setAttribute("pass", Utilities.decryptText(user.getPass()));
             req.setAttribute("fio", user.getFio());
             req.setAttribute("balance", user.getBalance());
             req.setAttribute("tell", user.getTell());
             req.setAttribute("adress", user.getAdress());
 //            req.setAttribute("block", (user.isBlock()) ? "Blocked" : "Unblocked");
             System.out.println("откуда заполняли пользователя>> " + user.toString());
+            Method.setAttributeEditUserPage(req,resp);
             RequestDispatcher rd = req.getRequestDispatcher(Path.PAGE_CHANGE_USER_PAGE);
             rd.forward(req, resp);
 
         }
         if (req.getParameter("newTariff") != null) {
+            Method.setAttributeEditTAriffPage(req,resp);
             RequestDispatcher rd = req.getRequestDispatcher(Path.PAGE_NEW_TARIFF_PAGE);
             rd.forward(req, resp);
         }
@@ -270,12 +286,15 @@ public class Logic {
 
             req.setAttribute("arrTariff", db.findAlltariff());
 
+            Method.setAttributeEditServicePage(req,resp);
             RequestDispatcher rd = req.getRequestDispatcher(Path.PAGE_NEW_SERVICE_PAGE);
             rd.forward(req, resp);
         }
         if (req.getParameter("newAdmin") != null) {
+            Method.setAttributeNewAdminPage(req,resp);
             RequestDispatcher rd = req.getRequestDispatcher(Path.PAGE_NEW_ADMIN_PAGE);
             rd.forward(req, resp);
+
         }
         if (req.getParameter("changeTariff") != null) {
             db = new DBManager();
@@ -289,6 +308,7 @@ public class Logic {
                 req.setAttribute("price", tariff.getPrice());
                 req.setAttribute("comment", tariff.getComment());
                 System.out.println("ТАРИФ Который искали >> " + tariff.toString());
+                Method.setAttributeEditTAriffPage(req,resp);
                 RequestDispatcher rd = req.getRequestDispatcher(Path.PAGE_CHANGE_TARIFF_PAGE);
                 rd.forward(req, resp);
 
@@ -310,6 +330,7 @@ public class Logic {
                 req.setAttribute("price", service.getPrice());
                 req.setAttribute("comment", service.getComment());
                 System.out.println("ТАРИФ Который искали >> " + service.toString());
+                Method.setAttributeEditServicePage(req,resp);
                 RequestDispatcher rd = req.getRequestDispatcher(Path.PAGE_CHANGE_SERVICE_PAGE);
                 rd.forward(req, resp);
 
@@ -321,6 +342,7 @@ public class Logic {
         if (req.getParameter("sorted") != null) {
             System.out.println("Попал перед сортировкой");
             req = Method.sortTariff(req);
+            Method.setAttributeAdminPage(req);
             RequestDispatcher rd = req.getRequestDispatcher(Path.PAGE_ADMIN_PAGE);
             rd.forward(req, resp);
         }
@@ -328,6 +350,7 @@ public class Logic {
 
             ArrayList<Service> allServiceForTariff = db.allServiceForTarif(req.getParameter("resChangeTariff"));
             req.setAttribute("allServiceForTariff", allServiceForTariff);
+            Method.setAttributeTariffPage(req, resp);
             RequestDispatcher rd = req.getRequestDispatcher(Path.PAGE_ADMIN_PAGE_SERVICE_FOR_ONE_TARIFF);
             rd.forward(req, resp);
         }if(req.getParameter("deleteService")!=null){
@@ -342,8 +365,9 @@ public class Logic {
                 Method.openAdminPage(req, resp);
         }if (req.getParameter("exit") != null) {
             s.removeAttribute("currentUser");
-            RequestDispatcher rd = req.getRequestDispatcher(Path.PAGE_START_PAGE);
-            rd.forward(req, resp);
+            Method.openStartPage(req, resp);
+//            RequestDispatcher rd = req.getRequestDispatcher(Path.PAGE_START_PAGE);
+//            rd.forward(req, resp);
         }
 
     }
@@ -497,7 +521,7 @@ public class Logic {
                 rd.forward(req, resp);
             }
 
-        }if(req.getParameter("cancel")!=null){
+        }if(req.getParameter("save")!=null){
             System.out.println("Нажата кнопка отмены >> ");
         }else{
 //            System.out.println("ОШИБКА ПОЛЬЗ ИЛИ АДМИН НЕ ДОБАВЛЕНЫ >> ");
